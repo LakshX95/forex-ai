@@ -18,9 +18,8 @@ async def fetch_live_price(symbol: str) -> dict:
     Fetch latest quote for a single pair.
     Returns: { symbol, price, change, change_pct, timestamp }
     """
-    sym = symbol.replace("/", "")
     url = f"{BASE_URL}/price"
-    params = {"symbol": sym, "apikey": settings.twelve_data_api_key}
+    params = {"symbol": symbol, "apikey": settings.twelve_data_api_key}
 
     async with httpx.AsyncClient(timeout=8.0) as client:
         resp = await client.get(url, params=params)
@@ -41,10 +40,9 @@ async def fetch_ohlcv(symbol: str, interval: str = "15min", outputsize: int = 10
     Fetch OHLCV candles. interval: 1min 5min 15min 1h 4h 1day
     Returns list of { datetime, open, high, low, close, volume }
     """
-    sym = symbol.replace("/", "")
     url = f"{BASE_URL}/time_series"
     params = {
-        "symbol": sym,
+        "symbol": symbol,
         "interval": interval,
         "outputsize": outputsize,
         "apikey": settings.twelve_data_api_key,

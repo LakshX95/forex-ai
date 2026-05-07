@@ -56,7 +56,10 @@ class SignalResult:
     timestamp: str
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        import json
+        # Convert numpy scalars → native Python so FastAPI can JSON-serialize them
+        raw = asdict(self)
+        return json.loads(json.dumps(raw, default=lambda o: o.item() if hasattr(o, 'item') else float(o)))
 
 
 # ── Helper functions ──────────────────────────────────────────────────────────
